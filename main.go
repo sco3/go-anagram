@@ -1,44 +1,34 @@
 package main
 
-import "fmt"
+import (
+	"check-anagram/v2/ana"
+	"fmt"
+)
+
+type anagramFunc func(a, b string) bool
 
 func main() {
-	checkAnagramAndPrint("abc", "abx")
-	checkAnagramAndPrint("abc", "cab")
-	checkAnagramAndPrint("abc", "caba")
-}
-
-func checkAnagramAndPrint(a string, b string) {
-	fmt.Println(a, " ", b, " ", checkAnagram(a, b))
-
-}
-
-func checkAnagram(a string, b string) bool {
-	if len(a) != len(b) {
-		return false
+	testData := []ana.TestCase{
+		{"abc", "abx", false},
+		{"abc", "cab", true},
+		{"abc", "caba", false},
 	}
 
-	m := map[int32]int{}
-	for _, c := range a {
-		m[c]++
+	funcs := map[string]anagramFunc{
+		"map":  ana.CheckAnagram,
+		"sort": ana.CheckAnagramSort,
 	}
 
-	for _, c := range b {
-		fmt.Println(m)
-		val := m[c]
-		if val == 0 {
-			return false
+	for _, testDatum := range testData {
+		for name, fn := range funcs {
+			var result bool = false
+			result = fn(testDatum.A, testDatum.B)
+			fmt.Println(testDatum.A, " ", testDatum.B, " ", result, name)
+			if testDatum.Result != result {
+				panic(fmt.Sprintf("Failed test: %v", testDatum))
+			}
 		}
-		val--
-		if val == 0 {
-			delete(m, c)
-		} else {
-			m[c] = val
-		}
+
 	}
 
-	if len(m) == 0 {
-		return true
-	}
-	return false
 }
