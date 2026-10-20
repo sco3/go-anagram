@@ -16,16 +16,13 @@ func CheckAnagram(a string, b string) bool {
 		if val == 0 {
 			return false
 		}
-		val--
-		if val == 0 {
-			delete(m, c)
-		} else {
-			m[c] = val
-		}
+		m[c]--
 	}
 
-	if len(m) == 0 {
-		return true
+	for _, v := range m {
+		if v != 0 {
+			return false
+		}
 	}
-	return false
+	return true
 }
