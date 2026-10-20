@@ -1,7 +1,7 @@
 # Check anagram in go
 
 ```sh
-abc(3) abx(3) false map Took: 65ns
+ abc(3) abx(3) false map Took: 65ns
  abc(3) abx(3) false sort Took: 68ns
  abc(3) cab(3) true map Took: 131ns
  abc(3) cab(3) true sort Took: 70ns
