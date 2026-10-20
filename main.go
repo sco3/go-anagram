@@ -21,17 +21,16 @@ func truncate(s string, n int) string {
 
 func main() {
 	testData := []ana.TestCase{
-		{"abc", "abx", false},
-		{"abc", "cab", true},
-		{"abc", "caba", false},
-		{"abcdefghij", "jihgfedcba", true},
-		{"the quick brown fox", "xof nworb kciuq eht", true},
+		{A: "abc", B: "abx", Result: false},
+		{A: "abc", B: "cab", Result: true},
+		{A: "abc", B: "caba", Result: false},
+		{A: "abcdefghij", B: "jihgfedcba", Result: true},
+		{A: "the quick brown fox", B: "xof nworb kciuq eht", Result: true},
 
-		{strings.Repeat("a", 100), strings.Repeat("a", 100), true},
-		{strings.Repeat("a", 1000), strings.Repeat("a", 1000), true},
-		{strings.Repeat("a", 10000), strings.Repeat("a", 10000), true},
+		{A: strings.Repeat("a", 100), B: strings.Repeat("a", 100), Result: true},
+		{A: strings.Repeat("a", 1000), B: strings.Repeat("a", 1000), Result: true},
+		{A: strings.Repeat("a", 10000), B: strings.Repeat("a", 10000), Result: true},
 	}
-
 	funcs := map[string]anagramFunc{
 		"map":  ana.CheckAnagram,
 		"sort": ana.CheckAnagramSort,
@@ -39,9 +38,9 @@ func main() {
 
 	for _, testDatum := range testData {
 		for name, fn := range funcs {
-			var result bool = false
+			result := false
 			r := testing.Benchmark(func(b *testing.B) {
-				for _ = range b.N {
+				for range b.N {
 					result = fn(testDatum.A, testDatum.B)
 				}
 			})
